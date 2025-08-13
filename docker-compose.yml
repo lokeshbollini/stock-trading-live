@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: stocktrade
+      POSTGRES_USER: stocktrade_user
+      POSTGRES_PASSWORD: stocktrade_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - stocktrade-network
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/stocktrade
+      SPRING_DATASOURCE_USERNAME: stocktrade_user
+      SPRING_DATASOURCE_PASSWORD: stocktrade_pass
+      ALPHA_VANTAGE_API_KEY: ${ALPHA_VANTAGE_API_KEY:-demo}
+      JWT_SECRET: ${JWT_SECRET:-mySecretKey123456789012345678901234567890}
+    depends_on:
+      - postgres
+    networks:
+      - stocktrade-network
+
+volumes:
+  postgres_data:
+
+networks:
+  stocktrade-network:
+    driver: bridge

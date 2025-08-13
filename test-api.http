@@ -1,0 +1,59 @@
+### Stock Trading Simulator API Tests
+### Base URL: http://localhost:8080
+
+### 1. Register a new user
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com", 
+  "password": "password123",
+  "firstName": "Test",
+  "lastName": "User"
+}
+
+### 2. Login with demo user
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "demo",
+  "password": "demo123"
+}
+
+### 3. Get stock quote (no auth required)
+GET http://localhost:8080/api/stocks/AAPL/quote
+
+### 4. Get all stocks (no auth required)
+GET http://localhost:8080/api/stocks
+
+### 5. Get popular stocks (no auth required)
+GET http://localhost:8080/api/stocks/popular
+
+### 6. Get user profile (requires auth - replace YOUR_JWT_TOKEN)
+GET http://localhost:8080/api/users/me
+Authorization: Bearer YOUR_JWT_TOKEN
+
+### 7. Get portfolio (requires auth)
+GET http://localhost:8080/api/portfolio
+Authorization: Bearer YOUR_JWT_TOKEN
+
+### 8. Execute buy order (requires auth)
+POST http://localhost:8080/api/trades/buy
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "stockSymbol": "AAPL",
+  "quantity": 5,
+  "price": 189.50
+}
+
+### 9. Get trade history (requires auth)
+GET http://localhost:8080/api/trades/history
+Authorization: Bearer YOUR_JWT_TOKEN
+
+### 10. Get portfolio summary (requires auth)
+GET http://localhost:8080/api/portfolio/summary
+Authorization: Bearer YOUR_JWT_TOKEN
